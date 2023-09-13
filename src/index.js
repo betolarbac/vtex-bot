@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client, IntentsBitField, EmbedBuilder} = require("discord.js");
+const { Client, IntentsBitField, REST, EmbedBuilder, Routes } = require("discord.js");
 
 
 const client = new Client({
@@ -11,6 +11,33 @@ const client = new Client({
     ],
 });
 
+client.on('ready', () => {
+  console.log(`Logado como ${client.user.tag}`);
+});
+
+client.on('guildCreate', async (guild) => {
+  console.log(`Bot adicionado ao servidor: ${guild.name} (ID: ${guild.id})`);
+
+  
+  const commands = [
+    {
+      name: 'status',
+      description: 'status da vtex',
+    },
+  ];
+
+  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+
+  try {
+    console.log('comando carregando');
+    await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, guild.id), {
+      body: commands,
+    });
+    console.log('comando registrando');
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 client.on('interactionCreate', async (i) => {
   const response = await fetch("https://status.vtex.com/api/v2/summary.json");
