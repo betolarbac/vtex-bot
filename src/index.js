@@ -15,7 +15,7 @@ let currentComponentStatus = {};
 
 client.on('ready', () => {
   console.log(`Logado como ${client.user.tag}`);
-  setInterval(checkComponentStatus, 10000);
+  setInterval(checkComponentStatus, 30000); //30 segundos
 });
 
 // client.on('guildCreate', async (guild) => {
@@ -104,7 +104,7 @@ function sendStatusChangeMessage(component) {
       .setDescription(`${component.status === "operational" ? ':white_check_mark: ' : ':no_entry:'} ${component.status}`)
       .setTimestamp();
   //id do canal onde o bot deve enviar as mensagens de atualização 
-  const channelId = '1151504495197556798';
+  const channelId = '1151545041718870107';
 
   const channel = client.channels.cache.get(channelId);
   if (channel) {
